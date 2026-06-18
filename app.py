@@ -14,25 +14,25 @@ if st.sidebar.button("🔄 立即同步最新資料"):
     st.rerun()
 
 # 選擇學校選單
-school = st.sidebar.selectbox("請選擇學校", ["李兆基小學", "惇裕小學", "培恩小學", "寶覺小學"])
+school = st.sidebar.selectbox("請選擇學校", ["寶覺小學", "培恩小學", "李兆基小學", "惇裕小學"])
 
-# 2. 學校資料庫 (已完全更新 李兆基小學 的最新獨立連結與精確 GID)
+# 2. 學校資料庫 (已完全更新 寶覺小學、培恩小學、李兆基小學、惇裕小學 的最新獨立連結)
 config = {
+    "寶覺小學": {
+        "id": "1by_dfhls7y68dU5RWKNl1LqcuMs9q8ftKh7m8EtCE5U", 
+        "gid": "1429678497"  # 已更新為寶覺小學最新連結
+    },
+    "培恩小學": {
+        "id": "1MniZat9316zGlIeifXG08-Z9B6HfkZDYSOZSklVaPhg", 
+        "gid": "1192721839"
+    },
     "李兆基小學": {
         "id": "1HmxJGQKppZj3vyGXGPXHzCknPxLrQ6B7UPAh9JaR8xk", 
-        "gid": "127869480"  # 已更新為最新的資料連結
+        "gid": "127869480"
     },
     "惇裕小學": {
         "id": "19vimBn6Zw2dRod0Do5vCTYgjM8G0GL_HS5fYmfz_Q5Y", 
         "gid": "1590276216"
-    },
-    "培恩小學": {
-        "id": "1GvoiEZ2Qk-To9rojnjxVNHvF9wdxT386yVa-KD1v0oI", 
-        "gid": "941462524"
-    },
-    "寶覺小學": {
-        "id": "18eAOSQJDRgmK3zgCXGXAwp62tCjDoENbmaAKVE4TmCE", 
-        "gid": "840129368"
     }
 }
 
