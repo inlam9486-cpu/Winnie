@@ -14,21 +14,21 @@ if st.sidebar.button("🔄 立即同步最新資料"):
     st.rerun()
 
 # 選擇學校選單
-school = st.sidebar.selectbox("請選擇學校", ["惇裕小學", "培恩小學", "李兆基小學", "寶覺小學"])
+school = st.sidebar.selectbox("請選擇學校", ["李兆基小學", "惇裕小學", "培恩小學", "寶覺小學"])
 
-# 2. 學校資料庫 (已更新 惇裕小學 的最新 GID)
+# 2. 學校資料庫 (已完全更新 李兆基小學 的最新獨立連結與精確 GID)
 config = {
+    "李兆基小學": {
+        "id": "1HmxJGQKppZj3vyGXGPXHzCknPxLrQ6B7UPAh9JaR8xk", 
+        "gid": "127869480"  # 已更新為最新的資料連結
+    },
     "惇裕小學": {
         "id": "19vimBn6Zw2dRod0Do5vCTYgjM8G0GL_HS5fYmfz_Q5Y", 
-        "gid": "1590276216"  # 更新為最新的 GID
+        "gid": "1590276216"
     },
     "培恩小學": {
         "id": "1GvoiEZ2Qk-To9rojnjxVNHvF9wdxT386yVa-KD1v0oI", 
         "gid": "941462524"
-    },
-    "李兆基小學": {
-        "id": "1APH8BvGbsLcGO-bLgt9xtjStV6vvrFJsZYJ_7GGT--E", 
-        "gid": "834994642"
     },
     "寶覺小學": {
         "id": "18eAOSQJDRgmK3zgCXGXAwp62tCjDoENbmaAKVE4TmCE", 
@@ -95,4 +95,4 @@ try:
 
 except Exception as e:
     st.error("🚨 資料讀取失敗")
-    st.info("原因可能：\n1. 該學校的試算表尚未開啟『 know with the link can view (知道連結的人即可檢視) 』權限。\n2. 若剛調整完權限，請點擊左側『🔄 立即同步最新資料』按鈕重試。")
+    st.info("原因可能：\n1. 該學校的試算表尚未開啟『知道連結的人即可檢視』權限。\n2. 若剛調整完權限，請點擊左側『🔄 立即同步最新資料』按鈕重試。")
