@@ -19,8 +19,8 @@ school = st.sidebar.selectbox("請選擇學校", ["寶覺小學", "培恩小學"
 # 2. 學校資料庫 (已完全更新 寶覺小學、培恩小學、李兆基小學、惇裕小學 的最新獨立連結)
 config = {
     "寶覺小學": {
-        "id": "1by_dfhls7y68dU5RWKNl1LqcuMs9q8ftKh7m8EtCE5U", 
-        "gid": "1429678497"  # 已更新為寶覺小學最新連結
+        "id": "1quH1jZ1zovtAqShRg2U6SswnNFNcYpISEv32p9Wm4oY", 
+        "gid": "38276536"  # 已更新為寶覺小學最新連結與 GID
     },
     "培恩小學": {
         "id": "1MniZat9316zGlIeifXG08-Z9B6HfkZDYSOZSklVaPhg", 
