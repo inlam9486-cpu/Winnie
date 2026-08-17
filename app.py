@@ -13,14 +13,27 @@ if st.sidebar.button("🔄 立即同步最新資料"):
     st.cache_data.clear()
     st.rerun()
 
-# 選擇學校選單
-school = st.sidebar.selectbox("請選擇學校", ["寶覺小學", "培恩小學", "李兆基小學", "惇裕小學"])
+# 選擇學校選單（包含原有 4 間 + 新增 3 間）
+school_options = [
+    "惇裕小學", 
+    "寶覺小學", 
+    "培恩小學", 
+    "李兆基小學", 
+    "錦田蒙養公立學校", 
+    "錦田通德學校", 
+    "校友會小學"
+]
+school = st.sidebar.selectbox("請選擇學校", school_options)
 
-# 2. 學校資料庫 (已完全更新 寶覺小學、培恩小學、李兆基小學、惇裕小學 的最新獨立連結)
+# 2. 學校資料庫
 config = {
+    "惇裕小學": {
+        "id": "1Uj5ZwFw4CrUhCW67AKR929zhmDDzlBzaqQYeGnrsZrE", 
+        "gid": "755675256"  # 已更新為最新連結
+    },
     "寶覺小學": {
         "id": "1quH1jZ1zovtAqShRg2U6SswnNFNcYpISEv32p9Wm4oY", 
-        "gid": "38276536"  # 已更新為寶覺小學最新連結與 GID
+        "gid": "38276536"
     },
     "培恩小學": {
         "id": "1MniZat9316zGlIeifXG08-Z9B6HfkZDYSOZSklVaPhg", 
@@ -30,9 +43,18 @@ config = {
         "id": "1HmxJGQKppZj3vyGXGPXHzCknPxLrQ6B7UPAh9JaR8xk", 
         "gid": "127869480"
     },
-    "惇裕小學": {
-        "id": "19vimBn6Zw2dRod0Do5vCTYgjM8G0GL_HS5fYmfz_Q5Y", 
-        "gid": "1590276216"
+    # 待填入新學校試算表連結資訊
+    "錦田蒙養公立學校": {
+        "id": "", 
+        "gid": ""
+    },
+    "錦田通德學校": {
+        "id": "", 
+        "gid": ""
+    },
+    "校友會小學": {
+        "id": "", 
+        "gid": ""
     }
 }
 
@@ -41,58 +63,62 @@ GID = config[school]["gid"]
 
 st.title(f"🏫 {school} - 報更即時看板")
 
-# 使用動態時間戳 t 參數，強迫 Google 每次都生成最新的 CSV 資料，實現自行更新
-csv_url = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}&t={int(time.time())}"
+# 若尚未填寫 ID，顯示提示訊息
+if not SHEET_ID or not GID:
+    st.info("ℹ️ 該學校暫未設定試算表網址連結，請提供 Google 試算表網址以完成設定。")
+else:
+    # 使用動態時間戳 t 參數，強迫 Google 每次都生成最新的 CSV 資料，實現自行更新
+    csv_url = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}&t={int(time.time())}"
 
-@st.cache_data(ttl=5) # 5 秒快取過期，實現近乎實時的更新
-def load_data(url):
-    return pd.read_csv(url)
+    @st.cache_data(ttl=5) # 5 秒快取過期，實現近乎實時的更新
+    def load_data(url):
+        return pd.read_csv(url)
 
-try:
-    df = load_data(csv_url)
-    
-    # 智慧識別欄位 (自動適應各校表單欄位名稱長度)
-    name_col = next((c for c in df.columns if '姓名' in c or 'name' in c.lower()), df.columns[1])
-    phone_col = next((c for c in df.columns if '電話' in c or 'Phone' in c), df.columns[2])
-    # 找出所有包含日期格式的欄位
-    date_cols = [c for c in df.columns if any(x in c for x in ['/', '2026', '月', '('])]
-
-    # 側邊欄：導師管理
-    st.sidebar.markdown("---")
-    tutors = df[name_col].dropna().unique()
-    sel_tutor = st.sidebar.selectbox("🔍 搜尋導師", tutors)
-    st.caption(f"數據最後同步時間：{time.strftime('%H:%M:%S')}")
-
-    # 主畫面分頁
-    tab1, tab2 = st.tabs(["🗓️ 每日概覽", "👤 導師個人統計"])
-
-    with tab1:
-        if date_cols:
-            target = st.selectbox("選擇日期", date_cols)
-            # 篩選當天有填寫內容（不為空值）的導師
-            daily = df[df[target].notna()][[name_col, phone_col, target]]
-            daily.columns = ['導師姓名', '電話', '報更內容']
-            st.success(f"{target} 共有 {len(daily)} 位導師報更")
-            st.dataframe(daily, use_container_width=True)
-        else:
-            st.warning("⚠️ 此表單中暫時找不到有效的日期欄位，請檢查試算表標題是否包含年份、月份或斜線。")
-
-    with tab2:
-        st.subheader(f"{sel_tutor} 的報更詳情")
-        t_data = df[df[name_col] == sel_tutor]
-        schedule = []
-        for d in date_cols:
-            if d in t_data.columns:
-                val = t_data[d].values[0]
-                if pd.notna(val):
-                    schedule.append({"日期": d, "內容": val})
+    try:
+        df = load_data(csv_url)
         
-        if schedule:
-            st.metric("本月總報更天數", len(schedule))
-            st.table(pd.DataFrame(schedule))
-        else:
-            st.info("該導師本月尚未有報更紀錄。")
+        # 智慧識別欄位 (自動適應各校表單欄位名稱長度)
+        name_col = next((c for c in df.columns if '姓名' in c or 'name' in c.lower()), df.columns[1])
+        phone_col = next((c for c in df.columns if '電話' in c or 'Phone' in c), df.columns[2])
+        # 找出所有包含日期格式的欄位
+        date_cols = [c for c in df.columns if any(x in c for x in ['/', '2026', '月', '('])]
 
-except Exception as e:
-    st.error("🚨 資料讀取失敗")
-    st.info("原因可能：\n1. 該學校的試算表尚未開啟『知道連結的人即可檢視』權限。\n2. 若剛調整完權限，請點擊左側『🔄 立即同步最新資料』按鈕重試。")
+        # 側邊欄：導師管理
+        st.sidebar.markdown("---")
+        tutors = df[name_col].dropna().unique()
+        sel_tutor = st.sidebar.selectbox("🔍 搜尋導師", tutors)
+        st.caption(f"數據最後同步時間：{time.strftime('%H:%M:%S')}")
+
+        # 主畫面分頁
+        tab1, tab2 = st.tabs(["🗓️ 每日概覽", "👤 導師個人統計"])
+
+        with tab1:
+            if date_cols:
+                target = st.selectbox("選擇日期", date_cols)
+                # 篩選當天有填寫內容（不為空值）的導師
+                daily = df[df[target].notna()][[name_col, phone_col, target]]
+                daily.columns = ['導師姓名', '電話', '報更內容']
+                st.success(f"{target} 共有 {len(daily)} 位導師報更")
+                st.dataframe(daily, use_container_width=True)
+            else:
+                st.warning("⚠️ 此表單中暫時找不到有效的日期欄位，請檢查試算表標題是否包含年份、月份或斜線。")
+
+        with tab2:
+            st.subheader(f"{sel_tutor} 的報更詳情")
+            t_data = df[df[name_col] == sel_tutor]
+            schedule = []
+            for d in date_cols:
+                if d in t_data.columns:
+                    val = t_data[d].values[0]
+                    if pd.notna(val):
+                        schedule.append({"日期": d, "內容": val})
+            
+            if schedule:
+                st.metric("本月總報更天數", len(schedule))
+                st.table(pd.DataFrame(schedule))
+            else:
+                st.info("該導師本月尚未有報更紀錄。")
+
+    except Exception as e:
+        st.error("🚨 資料讀取失敗")
+        st.info("原因可能：\n1. 該學校的試算表尚未開啟『知道連結的人即可檢視』權限。\n2. 若剛調整完權限，請點擊左側『🔄 立即同步最新資料』按鈕重試。")
