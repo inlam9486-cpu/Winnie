@@ -46,10 +46,7 @@ config = {
     "培恩小學": {
         "id": "1SE1tx9AlWe_dPdH_e3t67ienI71QKgQCeaLIJml-Fn0", 
         "gid": "1808477045"
-    },
-    "李兆基小學": {
-        "id": "1HmxJGQKppZj3vyGXGPXHzCknPxLrQ6B7UPAh9JaR8xk", 
-        "gid": "127869480"
+  
     },
     "錦田通德學校": {
         "id": "1cWKdTvKzWppxhUH2vsXafvEsQLUA2CYfcLwth0Sdntw", 
