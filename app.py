@@ -13,7 +13,7 @@ if st.sidebar.button("🔄 立即同步最新資料"):
     st.cache_data.clear()
     st.rerun()
 
-# 選擇學校選單（已將「惇裕小學」移至首位，作為預設載入學校）
+# 選擇學校選單（首頁預設：惇裕小學）
 school_options = [
     "惇裕小學", 
     "錦田蒙養公立學校",
@@ -25,7 +25,7 @@ school_options = [
 ]
 school = st.sidebar.selectbox("請選擇學校", school_options)
 
-# 2. 學校資料庫 (已完全填齊 7 校連結與精準 GID)
+# 2. 學校資料庫 (已更新培恩小學連結與精準 GID)
 config = {
     "錦田蒙養公立學校": {
         "id": "1pvWXSAjVgEhFpi6Zw26JPpBbjeSDxFazahH9d1_Uuno", 
@@ -44,8 +44,8 @@ config = {
         "gid": "38276536"
     },
     "培恩小學": {
-        "id": "1MniZat9316zGlIeifXG08-Z9B6HfkZDYSOZSklVaPhg", 
-        "gid": "1192721839"
+        "id": "1SE1tx9AlWe_dPdH_e3t67ienI71QKgQCeaLIJml-Fn0", 
+        "gid": "1808477045"
     },
     "李兆基小學": {
         "id": "1HmxJGQKppZj3vyGXGPXHzCknPxLrQ6B7UPAh9JaR8xk", 
