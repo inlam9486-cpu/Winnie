@@ -13,23 +13,27 @@ if st.sidebar.button("🔄 立即同步最新資料"):
     st.cache_data.clear()
     st.rerun()
 
-# 選擇學校選單（包含原有 4 間 + 新增 3 間）
+# 選擇學校選單
 school_options = [
+    "校友會小學",
     "惇裕小學", 
     "寶覺小學", 
     "培恩小學", 
     "李兆基小學", 
     "錦田蒙養公立學校", 
-    "錦田通德學校", 
-    "校友會小學"
+    "錦田通德學校"
 ]
 school = st.sidebar.selectbox("請選擇學校", school_options)
 
 # 2. 學校資料庫
 config = {
+    "校友會小學": {
+        "id": "1wcuNVbpnM2Eqv9j6slcA3pLcVR3QflCc8ubQXaYZVVI", 
+        "gid": "2126516204"  # 已更新校友會小學連結
+    },
     "惇裕小學": {
         "id": "1Uj5ZwFw4CrUhCW67AKR929zhmDDzlBzaqQYeGnrsZrE", 
-        "gid": "755675256"  # 已更新為最新連結
+        "gid": "755675256"
     },
     "寶覺小學": {
         "id": "1quH1jZ1zovtAqShRg2U6SswnNFNcYpISEv32p9Wm4oY", 
@@ -43,16 +47,11 @@ config = {
         "id": "1HmxJGQKppZj3vyGXGPXHzCknPxLrQ6B7UPAh9JaR8xk", 
         "gid": "127869480"
     },
-    # 待填入新學校試算表連結資訊
     "錦田蒙養公立學校": {
         "id": "", 
         "gid": ""
     },
     "錦田通德學校": {
-        "id": "", 
-        "gid": ""
-    },
-    "校友會小學": {
         "id": "", 
         "gid": ""
     }
