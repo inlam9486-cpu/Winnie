@@ -13,7 +13,7 @@ if st.sidebar.button("🔄 立即同步最新資料"):
     st.cache_data.clear()
     st.rerun()
 
-# 選擇學校選單（首頁預設：惇裕小學）
+# 選擇學校選單（預設首頁為惇裕小學）
 school_options = [
     "惇裕小學", 
     "錦田蒙養公立學校",
@@ -24,7 +24,7 @@ school_options = [
 ]
 school = st.sidebar.selectbox("請選擇學校", school_options)
 
-# 2. 學校資料庫 (已更新寶覺小學最新連結與 GID)
+# 2. 學校資料庫 (已更新寶覺小學 GID 為 1692348281)
 config = {
     "錦田蒙養公立學校": {
         "id": "1pvWXSAjVgEhFpi6Zw26JPpBbjeSDxFazahH9d1_Uuno", 
@@ -40,7 +40,7 @@ config = {
     },
     "寶覺小學": {
         "id": "1_oWRiHKAqtAhzMPoiDTrVazGokVnuvBx9MRlin8oIN0", 
-        "gid": "0"
+        "gid": "1692348281"
     },
     "培恩小學": {
         "id": "1SE1tx9AlWe_dPdH_e3t67ienI71QKgQCeaLIJml-Fn0", 
